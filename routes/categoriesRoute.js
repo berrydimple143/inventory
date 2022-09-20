@@ -56,4 +56,14 @@ router.post("/get-all-categories", async (req, res) => {
   }
 });
 
+router.post("/get-categories", async (req, res) => {
+  const { frequency, selectedRange , type } = req.body;
+  try {
+    const Categories = await Category.find();
+    res.send(Categories);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 module.exports = router;

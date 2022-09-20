@@ -3,12 +3,13 @@ import { Form, Input, message, Modal, Select, InputNumber } from "antd";
 import Spinner from "./Spinner";
 import axios from "axios";
 
-function AddEditCategory({
-  setShowAddEditCategoryModal,
-  showAddEditCategoryModal,
+function AddEditClient({
+  setShowAddEditClientModal,
+  showAddEditClientModal,
   selectedItemForEdit,
   setSelectedItemForEdit,
-  getCategories,
+  getClients,
+  clickedButton,
 }) {
   const [loading, setLoading] = useState(false);
   const onFinish = async (values) => {
@@ -16,24 +17,24 @@ function AddEditCategory({
       const user = JSON.parse(localStorage.getItem("inventory-user"));
       setLoading(true);
       if (selectedItemForEdit) {
-        await axios.post("/api/categories/edit-category", {
+        await axios.post("/api/clients/edit-client", {
            payload : {
             ...values,
             userid: user._id,
            },
-          categoryId: selectedItemForEdit._id,
+          clientId: selectedItemForEdit._id,
         });
-        getCategories();
-        message.success("Category updated successfully");
+        getClients();
+        message.success("Client updated successfully");
       } else {
-        await axios.post("/api/categories/add-category", {
+        await axios.post("/api/clients/add-client", {
           ...values,
           userid: user._id,
         });
-        getCategories();
-        message.success("Category added successfully");
+        getClients();
+        message.success("Client added successfully");
       }
-      setShowAddEditCategoryModal(false);
+      setShowAddEditClientModal(false);
       setSelectedItemForEdit(null);
       setLoading(false);
     } catch (error) {
@@ -43,24 +44,32 @@ function AddEditCategory({
   };
   return (
     <Modal
-      title={selectedItemForEdit ? "Edit Category" : "Add Category"}
-      visible={showAddEditCategoryModal}
-      onCancel={() => setShowAddEditCategoryModal(false)}
+      title={selectedItemForEdit ? "Edit Client" : "Add Client"}
+      visible={showAddEditClientModal}
+      onCancel={() => setShowAddEditClientModal(false)}
       footer={false}
     >
       {loading && <Spinner />}
       <Form
         layout="vertical"
-        className="category-form"
+        className="client-form"
         onFinish={onFinish}
         initialValues={selectedItemForEdit}
       >
-        <Form.Item label="Name" name="name" rules={[{ required: true }]}>
+        <Form.Item label="First Name" name="firstname" rules={[{ required: true }]}>
           <Input type="text" />
         </Form.Item>
-        <Form.Item label="Description" name="description">
+        <Form.Item label="Last Name" name="lastname" rules={[{ required: true }]}>
           <Input type="text" />
-        </Form.Item>        
+        </Form.Item>
+        <Form.Item label="Email" name="email" rules={[{ required: true }]}>
+          <Input type="email" />
+        </Form.Item>
+        { clickedButton !== "edit" && (
+          <Form.Item label="Password" name="password" rules={[{ required: true }]}>
+            <Input type="password" />
+          </Form.Item>
+        )}
         <div className="d-flex justify-content-end">
           <button className="primary" type="submit">
             SAVE
@@ -71,4 +80,4 @@ function AddEditCategory({
   );
 }
 
-export default AddEditCategory;
+export default AddEditClient;

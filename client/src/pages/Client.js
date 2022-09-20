@@ -1,10 +1,10 @@
 import { DatePicker, Form, message, Select, Table, Popconfirm } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import AddEditCategory from "../components/AddEditCategory";
+import AddEditClient from "../components/AddEditClient";
 import DefaultLayout from "../components/DefaultLayout";
 import Spinner from "../components/Spinner";
-import "../resources/categories.css";
+import "../resources/clients.css";
 import {
   UnorderedListOutlined,
   AreaChartOutlined,
@@ -13,37 +13,38 @@ import {
 } from "@ant-design/icons";
 import moment from "moment";
 const { RangePicker } = DatePicker;
-function Category() {
-  const [showAddEditCategoryModal, setShowAddEditCategoryModal] = useState(false);
-  const [selectedItemForEdit, setSelectedItemForEdit] = useState(null);
+function Client() {
+  const [showAddEditClientModal, setShowAddEditClientModal] = useState(false);
+  const [selectedItemForEdit, setSelectedItemForEdit] = useState(null);  
   const [loading, setLoading] = useState(false);
-  const [categoriesData, setCategoriesData] = useState([]);
+  const [clientsData, setClientsData] = useState([]);
   const [frequency, setFrequency] = useState("7");  
-  const [selectedRange, setSelectedRange] = useState([]);
+  const [selectedRange, setSelectedRange] = useState([]);  
+  const [clickedButton, setClickedButton] = useState('');
   const [deleteItem, setDeleteItem] = useState(null);
 
   const confirm = (e) => {
-    deleteCategory(deleteItem);    
+    deleteClient(deleteItem);    
   };
 
   const cancel = (e) => {
     setDeleteItem(null);
   };
 
-  const getCategories = async () => {
+  const getClients = async () => {
     try {
       const user = JSON.parse(localStorage.getItem("inventory-user"));
 
       setLoading(true);
       const response = await axios.post(
-        "/api/categories/get-all-categories",
+        "/api/clients/get-all-clients",
         {
           userid: user._id,
           frequency,
           ...(frequency === "custom" && { selectedRange }),
         }
       );
-      setCategoriesData(response.data);
+      setClientsData(response.data);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -51,14 +52,14 @@ function Category() {
     }
   };
 
-  const deleteCategory = async (record) => {
+  const deleteClient = async (record) => {
     try {
       setLoading(true);
-      await axios.post("/api/categories/delete-category", {
-        categoryId: record._id,
+      await axios.post("/api/clients/delete-client", {
+        clientId: record._id,
       });
-      message.success("Category deleted successfully");
-      getCategories();
+      message.success("Client deleted successfully");
+      getClients();
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -66,23 +67,27 @@ function Category() {
     }
   };
   useEffect(() => {
-    getCategories();
+    getClients();
   }, [frequency, selectedRange]);
 
   const columns = [
     {
-      title: "Date Created",
+      title: "Date Added",
       dataIndex: "createdAt",
       render: (text) => <span>{moment(text).format("YYYY-MM-DD")}</span>,
     },
     {
-      title: "Name",
-      dataIndex: "name",
+      title: "First Name",
+      dataIndex: "firstname",
     },
     {
-      title: "Description",
-      dataIndex: "description",
+      title: "Last Name",
+      dataIndex: "lastname",
     },
+    {
+      title: "Email",
+      dataIndex: "email",
+    },    
     {
       title: "Actions",
       dataIndex: "actions",
@@ -92,17 +97,18 @@ function Category() {
             <EditOutlined
               onClick={() => {
                 setSelectedItemForEdit(record);
-                setShowAddEditCategoryModal(true);
+                setShowAddEditClientModal(true);
+                setClickedButton('edit');
               }}
             />
             <Popconfirm
-              title="Are you sure to delete this category?"
+              title="Are you sure to delete this client?"
               onConfirm={confirm}
               onCancel={cancel}
               okText="Yes"
               cancelText="No"
             >
-              <DeleteOutlined className="mx-3" onClick={()=>setDeleteItem(record)}/>
+              <DeleteOutlined className="mx-3" onClick={()=>setDeleteItem(record)} />
             </Popconfirm>
           </div>
         );
@@ -114,7 +120,7 @@ function Category() {
     <DefaultLayout>
       {loading && <Spinner />}
       <div className="title-container d-flex justify-content-center align-items-center">
-        <h4>List of Category</h4>
+        <h4>List of Client</h4>
       </div>
       <div className="filter d-flex justify-content-between align-items-center">
         <div className="d-flex">
@@ -141,25 +147,26 @@ function Category() {
         <div className="d-flex">          
           <button
             className="primary"
-            onClick={() => setShowAddEditCategoryModal(true)}
+            onClick={() => setShowAddEditClientModal(true)}
           >
-            ADD CATEGORY
+            ADD CLIENT
           </button>
         </div>
       </div>
 
       <div className="table-analtics">
           <div className="table">
-            <Table columns={columns} dataSource={categoriesData} />
+            <Table columns={columns} dataSource={clientsData} />
           </div>        
       </div>
 
-      {showAddEditCategoryModal && (
-        <AddEditCategory
-          showAddEditCategoryModal={showAddEditCategoryModal}
-          setShowAddEditCategoryModal={setShowAddEditCategoryModal}
+      {showAddEditClientModal && (
+        <AddEditClient
+          showAddEditClientModal={showAddEditClientModal}
+          setShowAddEditClientModal={setShowAddEditClientModal}
           selectedItemForEdit={selectedItemForEdit}
-          getCategories={getCategories}
+          getClients={getClients}
+          clickedButton={clickedButton}
           setSelectedItemForEdit={setSelectedItemForEdit}
         />
       )}
@@ -167,4 +174,4 @@ function Category() {
   );
 }
 
-export default Category;
+export default Client;

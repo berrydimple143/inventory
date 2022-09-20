@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Test from "./pages/Test";
 import Product from "./pages/Product";
 import Category from "./pages/Category";
+import Client from "./pages/Client";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 
@@ -17,6 +18,7 @@ function App() {
           <Route path="/test" element={<ProtectedRoute><Test /></ProtectedRoute>} />
           <Route path="/product" element={<ProtectedRoute><Product /></ProtectedRoute>} />
           <Route path="/category" element={<ProtectedRoute><Category /></ProtectedRoute>} />
+          <Route path="/client" element={<ProtectedRoute><Client /></ProtectedRoute>} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
         </Routes>

@@ -25,7 +25,12 @@ function DefaultLayout(props) {
       <div className="layout">
         <div className="header d-flex justify-content-between align-items-center">
           <div>
-            <h1 className="logo">Inventory Management System</h1>
+            <h1 
+              onClick={()=>{                  
+                    navigate("/");
+                  }
+              } 
+              className="logo">Inventory Management System</h1>
           </div>        
           <div>          
               <button 
@@ -44,7 +49,12 @@ function DefaultLayout(props) {
                 className='primary'>Categories</button>       
           </div>
           <div>          
-              <button className='primary'>Clients</button>                
+              <button 
+                onClick={()=>{                  
+                      navigate("/client");
+                    }
+                }  
+                className='primary'>Clients</button>                
           </div>
           <div>
             <Dropdown overlay={menu} placement="bottomLeft">

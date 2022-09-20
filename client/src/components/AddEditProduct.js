@@ -9,6 +9,7 @@ function AddEditProduct({
   selectedItemForEdit,
   setSelectedItemForEdit,
   getProducts,
+  categoriesData,
 }) {
   const [loading, setLoading] = useState(false);
   const onFinish = async (values) => {
@@ -55,28 +56,25 @@ function AddEditProduct({
         onFinish={onFinish}
         initialValues={selectedItemForEdit}
       >
-        <Form.Item label="Name *" name="name">
+        <Form.Item label="Name" name="name" rules={[{ required: true }]}>
           <Input type="text" />
         </Form.Item>
         <Form.Item label="Description" name="description">
           <Input type="text" />
         </Form.Item>
-        <Form.Item label="Buy Price *" name="buy_price">
+        <Form.Item label="Buy Price" name="buy_price" rules={[{ required: true }]}>
           <Input type="text" />
         </Form.Item>
-        <Form.Item label="Sell Price *" name="sell_price">
+        <Form.Item label="Sell Price" name="sell_price" rules={[{ required: true }]}>
           <Input type="text" />
         </Form.Item>
-        <Form.Item label="Category *" name="category">
+        <Form.Item label="Category" name="category" rules={[{ required: true }]}>
           <Select>
             {" "}
-            <Select.Option value="Electronics">Electronics</Select.Option>
-            <Select.Option value="Health and Beauty">Health and Beauty</Select.Option>
-            <Select.Option value="Home and Living">Home and Living</Select.Option>
-            <Select.Option value="Groceries and Pets">Groceries and Pets</Select.Option>
+            {categoriesData && categoriesData.map((item, index) => <Select.Option value={item.name} key={index}>{item.name}</Select.Option>)}
           </Select>
         </Form.Item>
-        <Form.Item label="Stock *" name="stock">        
+        <Form.Item label="Stock" name="stock" rules={[{ required: true }]}>        
           <InputNumber min={0} defaultValue={0} />
         </Form.Item>
         <div className="d-flex justify-content-end">

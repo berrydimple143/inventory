@@ -1,9 +1,21 @@
-.filter{
-    box-shadow: 0 0 2px gray;
-    padding: 15px 20px;
-    border-radius: 5px;
+.title-container{
+    padding: 9px 0px;
+    border-top: 1px solid #efefed !important;
+    border-right: 1px solid #efefed !important;
+    border-left: 1px solid #efefed !important;
+    border-radius: none;
+    background-image: radial-gradient(#ffffff, #e5f6e5);
+    color: #fff;
 }
-
+.title-container h4 {
+    color: #30cfd0;
+    border-top: 1px solid #ffffff !important;
+    text-shadow: 2px 2px gray;
+}
+.filter{
+    padding: 15px 20px;  
+    border: 1px solid #efefef;  
+}
 .category-form label{
     color: rgba(0, 0, 0, 0.77) !important;
 }

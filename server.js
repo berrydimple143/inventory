@@ -8,10 +8,12 @@ const userRoute = require('./routes/usersRoute')
 const transactionsRoute = require('./routes/transactionsRoute')
 const productsRoute = require('./routes/productsRoute')
 const categoriesRoute = require('./routes/categoriesRoute')
+const clientsRoute = require('./routes/clientsRoute')
 app.use('/api/users/' , userRoute)
 app.use('/api/transactions/' , transactionsRoute)
 app.use('/api/products/' , productsRoute)
 app.use('/api/categories/' , categoriesRoute)
+app.use('/api/clients/' , clientsRoute)
 
 const port =process.env.PORT || 5000
 

@@ -1,4 +1,4 @@
-import { DatePicker, Form, message, Select, Table } from "antd";
+import { DatePicker, Form, message, Select, Table, Popconfirm } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import AddEditProduct from "../components/AddEditProduct";
@@ -20,6 +20,17 @@ function Product() {
   const [productsData, setProductsData] = useState([]);
   const [frequency, setFrequency] = useState("7");  
   const [selectedRange, setSelectedRange] = useState([]);
+  const [deleteItem, setDeleteItem] = useState(null);
+  const [categoriesData, setCategoriesData] = useState([]);
+
+  const confirm = (e) => {
+    deleteProduct(deleteItem);    
+  };
+
+  const cancel = (e) => {
+    setDeleteItem(null);
+  };
+
   const getProducts = async () => {
     try {
       const user = JSON.parse(localStorage.getItem("inventory-user"));
@@ -32,14 +43,14 @@ function Product() {
           frequency,
           ...(frequency === "custom" && { selectedRange }),
         }
-      );
+      );      
       setProductsData(response.data);
       setLoading(false);
     } catch (error) {
       setLoading(false);
       message.error("Something went wrong");
     }
-  };
+  };  
 
   const deleteProduct = async (record) => {
     try {
@@ -55,8 +66,25 @@ function Product() {
       message.error("Something went wrong");
     }
   };
+
+  const getCategories = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("inventory-user"));
+
+      setLoading(true);
+      const response = await axios.post(
+        "/api/categories/get-categories",{});
+      setCategoriesData(response.data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      message.error("Something went wrong");
+    }
+  };
+
   useEffect(() => {
     getProducts();
+    getCategories();
   }, [frequency, selectedRange]);
 
   const columns = [
@@ -97,7 +125,15 @@ function Product() {
                 setShowAddEditProductModal(true);
               }}
             />
-            <DeleteOutlined className="mx-3" onClick={()=>deleteProduct(record)}/>
+            <Popconfirm
+              title="Are you sure to delete this product?"
+              onConfirm={confirm}
+              onCancel={cancel}
+              okText="Yes"
+              cancelText="No"
+            >
+              <DeleteOutlined className="mx-3" onClick={()=>setDeleteItem(record)}/>
+            </Popconfirm>
           </div>
         );
       },
@@ -155,6 +191,7 @@ function Product() {
           selectedItemForEdit={selectedItemForEdit}
           getProducts={getProducts}
           setSelectedItemForEdit={setSelectedItemForEdit}
+          categoriesData={categoriesData}
         />
       )}
     </DefaultLayout>

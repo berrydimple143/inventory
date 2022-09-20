@@ -16,15 +16,15 @@
     padding: 15px 20px;  
     border: 1px solid #efefef;  
 }
-.product-form label{
+.client-form label{
     color: rgba(0, 0, 0, 0.77) !important;
 }
-.product-form input{
+.client-form input{
     border: 1px solid gray;
     border-bottom: 1px solid gray;
     box-shadow: none !important;
 }
-.product-form input:focus{
+.client-form input:focus{
     border: 1px solid gray;
     border-bottom: 1px solid gray !important;
     box-shadow: none !important;
