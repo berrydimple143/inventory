@@ -1,5 +1,5 @@
 # Inventory Management System
 
-## Project Description
+### Project Description
 
-### This project is an inventory management system created by Altus Tech IT Solutions Corp for a particular client. 
+- This project is an inventory management system created by Altus Tech IT Solutions Corp for a particular client. 
